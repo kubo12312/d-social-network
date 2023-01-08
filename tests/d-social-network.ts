@@ -21,8 +21,14 @@ describe('d-social-network', () => {
     })
     const postAccount = await program.account.post.fetch(post.publicKey)
 
-    assert.equal(postAccount.author.toBase58(), program.provider.wallet.publicKey.toBase58())
+    assert.equal(postAccount.creator.toBase58(), program.provider.wallet.publicKey.toBase58())
     assert.equal(postAccount.content, 'First Content')
     assert.ok(postAccount.timestamp)
+  })
+
+  it('fetch all posts', async () => {
+    const posts = await program.account.post.all()
+
+    assert.equal(posts.length, 1)
   })
 })
