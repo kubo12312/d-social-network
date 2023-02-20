@@ -1,7 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill";
 export default defineNuxtConfig({
-  ssr: false,
   vite: {
     optimizeDeps: {
       include: ['@solana/web3.js', '@solana/wallet-adapter-base'],
@@ -21,7 +20,7 @@ export default defineNuxtConfig({
   build: {
     transpile: ['@solana/web3.js', '@solana/wallet-adapter-base'],
   },
-  modules: ['@nuxtjs/tailwindcss'],
+  modules: ['@nuxtjs/tailwindcss', 'nuxt-icon'],
   nitro: {
     rollupConfig: {
       external: [

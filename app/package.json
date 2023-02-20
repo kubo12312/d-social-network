@@ -10,7 +10,8 @@
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.2.0",
     "autoprefixer": "^10.4.13",
-    "nuxt": "^3.2.2"
+    "nuxt": "^3.2.2",
+    "nuxt-icon": "^0.3.2"
   },
   "dependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
@@ -18,6 +19,7 @@
     "@solana/wallet-adapter-base": "^0.9.20",
     "@solana/wallet-adapter-wallets": "^0.19.12",
     "@solana/web3.js": "^1.73.0",
+    "dayjs": "^1.11.7",
     "solana-wallets-vue": "^0.6.0"
   },
   "resolutions": {

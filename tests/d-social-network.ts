@@ -11,7 +11,7 @@ describe('d-social-network', () => {
 
   it('send post', async () => {
     const post = anchor.web3.Keypair.generate()
-    await program.rpc.postSend('First Content', {
+    await program.rpc.sendPost('First Content', {
       accounts: {
         post: post.publicKey,
         creator: program.provider.wallet.publicKey,

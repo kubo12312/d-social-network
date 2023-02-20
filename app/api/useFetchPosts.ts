@@ -1,7 +1,9 @@
 import useWorkspace from '~~/composables/useWorkspace'
+import ToPost from '~~/mappers/ToPost'
 
 export default async () => {
   const workspace = useWorkspace()
-  const tweets = await workspace.program.account.post.all()
-  return tweets
+  const posts = await workspace.program.account.post.all()
+
+  return posts.map(ToPost)
 }
