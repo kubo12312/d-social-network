@@ -6,7 +6,7 @@ declare_id!("5dgW78UWc7hT4jxgh4XYr4NN6rcqDUndg7JzzUeGCskL");
 pub mod d_social_network {
     use super::*;
 
-    pub fn post_send(ctx: Context<SendPost>, content: String) -> Result<()> {
+    pub fn send_post(ctx: Context<SendPost>, content: String) -> Result<()> {
         let post: &mut Account<Post> = &mut ctx.accounts.post;
         let creator: &Signer = &ctx.accounts.creator;
         let time: Clock = Clock::get().unwrap();

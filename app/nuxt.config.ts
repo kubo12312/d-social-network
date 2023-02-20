@@ -1,8 +1,21 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill";
 export default defineNuxtConfig({
+  ssr: false,
   vite: {
     optimizeDeps: {
       include: ['@solana/web3.js', '@solana/wallet-adapter-base'],
+      esbuildOptions: {
+        define: {
+          global: "globalThis",
+        },
+        plugins: [
+          NodeGlobalsPolyfillPlugin({
+            process: true,
+            buffer: true,
+          }),
+        ],
+      },
     },
   },
   build: {
