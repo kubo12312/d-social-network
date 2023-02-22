@@ -1,54 +1,37 @@
 import useWorkspace from '~~/composables/useWorkspace'
-import { AnchorError, web3 } from '@project-serum/anchor'
-import { program } from '@project-serum/anchor/dist/cjs/native/system'
-import { utf8 } from '@project-serum/anchor/dist/cjs/utils/bytes'
-import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
+import { web3 } from '@project-serum/anchor'
+import usePostsStore from '~~/stores/usePostsStore'
 
 export default () => {
-
-  const defaultAccounts = {
-    tokenProgram: TOKEN_PROGRAM_ID,
-    clock: web3.SYSVAR_CLOCK_PUBKEY,
-    systemProgram: web3.SystemProgram.programId,
-  }
-
   const send = async (content: string) => {
     const workspace = useWorkspace()
-
-    const [stateSigner] = web3.PublicKey.findProgramAddressSync([utf8.encode('state')], workspace.program.programId)
-
-    let stateInfo: any
+    const post = web3.Keypair.generate()
+    const postsStore = usePostsStore()
+    const posts = usePosts()
 
     try {
-      stateInfo = await workspace.program.account.stateAccount.fetch(stateSigner)
-    } catch (e) {
-      await workspace.program.rpc.createState({
+      await workspace.program.rpc.postSend(content, {
         accounts: {
-          state: stateSigner,
-          authority: workspace.wallet.publicKey,
-          ...defaultAccounts,
+          creator: workspace.wallet!.publicKey,
+          post: post.publicKey,
+          systemProgram: web3.SystemProgram.programId,
         },
+        signers: [post],
       })
 
-      return
-    }
+      const newPost = {
+        pubKey: post.publicKey.toBase58(),
+        author: workspace.wallet!.publicKey.toBase58(),
+        content,
+        createdAt: Date.now(),
+        likeCount: 0,
+        userLike: false,
+      }
 
-    let [postSigner] = web3.PublicKey.findProgramAddressSync(
-      [utf8.encode('post'), stateInfo.postCount.toArrayLike(Buffer, 'be', 8)],
-      workspace.program.programId,
-    )
-
-    try {
-      await workspace.program.account.post.fetch(postSigner)
+      const newPosts = [newPost, ...posts.posts];
+      postsStore.$patch({ posts: newPosts })
     } catch (e) {
-      await workspace.program.rpc.sendPost(content, {
-        accounts: {
-          state: stateSigner,
-          post: postSigner,
-          authority: workspace.wallet.publicKey,
-          ...defaultAccounts
-        }
-      })
+      console.log(e)
     }
   }
 

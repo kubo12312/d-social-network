@@ -1,3 +1,4 @@
+import { BN } from '@project-serum/anchor'
 import useWorkspace from '~~/composables/useWorkspace'
 import usePostsStore from '~~/stores/usePostsStore'
 
@@ -9,10 +10,12 @@ export default async () => {
     dataSlice: { offset: 40, length: 8 },
   })
 
-  const accountKeys = accountsWithoutData.map((item) => item.pubkey.toBase58())
+  const allTweetsWithTimestamps = accountsWithoutData.map(({ account, pubkey }) => ({
+    pubkey,
+    timestamp: new BN(account.data, 'le'),
+  }))
 
-  console.log(accountKeys)
+  const accountKeys = allTweetsWithTimestamps.sort((a, b) => b.timestamp.cmp(a.timestamp)).map(({ pubkey }) => pubkey)
 
   postsStore.$patch({ accountKeys })
 }
- 

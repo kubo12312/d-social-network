@@ -2,6 +2,7 @@
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
 export default defineNuxtConfig({
   ssr: false,
+  css: ['/assets/main.css'],
   vite: {
     optimizeDeps: {
       include: ['@solana/web3.js', '@solana/wallet-adapter-base'],
