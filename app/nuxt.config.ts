@@ -1,12 +1,13 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill";
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
 export default defineNuxtConfig({
+  ssr: false,
   vite: {
     optimizeDeps: {
       include: ['@solana/web3.js', '@solana/wallet-adapter-base'],
       esbuildOptions: {
         define: {
-          global: "globalThis",
+          global: 'globalThis',
         },
         plugins: [
           NodeGlobalsPolyfillPlugin({
@@ -20,7 +21,10 @@ export default defineNuxtConfig({
   build: {
     transpile: ['@solana/web3.js', '@solana/wallet-adapter-base'],
   },
-  modules: ['@nuxtjs/tailwindcss', 'nuxt-icon'],
+  modules: ['@nuxtjs/tailwindcss', 'nuxt-icon', '@pinia/nuxt'],
+  pinia: {
+    autoImports: ['defineStore', ['defineStore', 'definePiniaStore']],
+  },
   nitro: {
     rollupConfig: {
       external: [

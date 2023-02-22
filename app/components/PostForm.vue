@@ -27,7 +27,6 @@ const wallet = useWorkspace().wallet
 const sendPost = useSendPost()
 
 const submitPost = async () => {
-  console.log(postValue)
   console.log(await sendPost.send(postValue.value))
 }
 </script>
