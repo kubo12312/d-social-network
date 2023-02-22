@@ -19,9 +19,11 @@ export default () => {
         signers: [post],
       })
 
+      const slicedKey = workspace.wallet!.publicKey.toBase58().slice(0, 6) + '...' + workspace.wallet!.publicKey.toBase58().slice(-6)
+
       const newPost = {
         pubKey: post.publicKey.toBase58(),
-        author: workspace.wallet!.publicKey.toBase58(),
+        author: slicedKey,
         content,
         createdAt: Date.now(),
         likeCount: 0,

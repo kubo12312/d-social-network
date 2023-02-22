@@ -1,5 +1,5 @@
 <template>
-  <div v-infinite-scroll="onLoadMore" class="overflow-y-scroll h-[calc(100vh_-_96px)]">
+  <div v-infinite-scroll="onLoadMore" class="overflow-y-scroll h-[calc(100vh_-_64px)] pt-6 pb-6">
     <PostForm />
     <div class="space-y-6">
       <Post v-for="(post, index) in posts.posts" :key="index" :post="post" />

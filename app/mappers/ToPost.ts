@@ -3,7 +3,7 @@ export default (data: any) => ({
   author: getAuthor(data.creator.toBase58()),
   content: data.content,
   createdAt: data.timestamp ?? '',
-  likeCount: data.like_count ?? 0,
+  likeCount: data.likeCount ?? 0,
   userLike: data.likers ?? false,
 })
 

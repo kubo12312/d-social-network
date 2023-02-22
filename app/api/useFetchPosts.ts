@@ -20,7 +20,7 @@ export default async (page: number) => {
     }
   })
 
-  console.log(mergedReponse)
+  console.log(mergedReponse[0])
 
   const posts = mergedReponse.map(ToPost)
 

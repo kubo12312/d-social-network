@@ -32,6 +32,24 @@ pub mod d_social_network {
 
         Ok(())
     }
+
+    pub fn post_unlike(ctx: Context<UnlikePost>) -> Result<()> {
+        let post = &mut ctx.accounts.post;
+        let authority = &ctx.accounts.authority;
+
+        if let Some(index) = post.likers.iter().enumerate().find_map(|(i, liker)| {
+            if liker == authority.key {
+                Some(i)
+            } else {
+                None
+            }
+        }) {
+            post.like_count -= 1;
+            post.likers.remove(index);
+        }
+    
+        Ok(())
+    }
 }
 
 #[derive(Accounts)]
@@ -48,6 +66,13 @@ pub struct LikePost<'info> {
     #[account(mut)]
     pub post: Account<'info, Post>,
     pub authority: Signer<'info>,
+}
+
+#[derive(Accounts)]
+pub struct UnlikePost<'info> {
+    #[account(mut)]
+    post: Account<'info, Post>,
+    authority: Signer<'info>,
 }
 
 
