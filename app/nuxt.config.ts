@@ -2,7 +2,7 @@
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
 export default defineNuxtConfig({
   ssr: false,
-  css: ['/assets/main.css'],
+  css: ['/assets/css/main.scss'],
   vite: {
     optimizeDeps: {
       include: ['@solana/web3.js', '@solana/wallet-adapter-base'],
@@ -22,6 +22,7 @@ export default defineNuxtConfig({
   build: {
     transpile: ['@solana/web3.js', '@solana/wallet-adapter-base'],
   },
+  buildModules: ['@nuxtjs/google-fonts'],
   modules: ['@nuxtjs/tailwindcss', 'nuxt-icon', '@pinia/nuxt'],
   pinia: {
     autoImports: ['defineStore', ['defineStore', 'definePiniaStore']],
@@ -38,4 +39,9 @@ export default defineNuxtConfig({
       ],
     },
   },
+  googleFonts: {
+    families: {
+      Lato: [300, 400, 600, 700, 900],
+    }
+  }
 })

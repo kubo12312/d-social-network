@@ -11,7 +11,7 @@ pub mod d_social_network {
         let creator: &Signer = &ctx.accounts.creator;
         let time: Clock = Clock::get().unwrap();
 
-        if content.chars().count() > 320 {
+        if content.chars().count() > 1024 {
             return Err(ErrorCode::ContentIsLong.into())
         }
 
@@ -50,6 +50,22 @@ pub mod d_social_network {
     
         Ok(())
     }
+
+    pub fn comment_send(ctx: Context<CommentSend>, content: String) -> Result<()> {
+        let comment: &mut Account<Comment> = &mut ctx.accounts.comment;
+        let creator: &Signer = &ctx.accounts.creator;
+        let time: Clock = Clock::get().unwrap();
+
+        if content.chars().count() > 320 {
+            return Err(ErrorCode::ContentIsLong.into())
+        }
+
+        comment.creator = *creator.key;
+        comment.timestamp = time.unix_timestamp;
+        comment.content = content;
+
+        Ok(())
+    }
 }
 
 #[derive(Accounts)]
@@ -75,6 +91,14 @@ pub struct UnlikePost<'info> {
     authority: Signer<'info>,
 }
 
+#[derive(Accounts)]
+pub struct CommentSend<'info> {
+    #[account(init, payer = creator, space = Comment::LEN)]
+    pub comment: Account<'info, Comment>,
+    #[account(mut)]
+    pub creator: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
 
 #[account]
 pub struct Post {
@@ -86,13 +110,24 @@ pub struct Post {
     pub likers: Vec<Pubkey>
 }
 
+#[account]
+pub struct Comment {
+    pub creator: Pubkey,
+    pub timestamp: i64,
+    pub content: String,
+}
+
 const DISCRIMINATOR_LENGTH: usize = 8;
 const PUBKEY_LENGTH: usize = 32;
 const TIMESTAMP_LENGTH: usize = 8;
 const STRING_LENGTH_PREFIX: usize = 4;
-const CONTENT_LENGTH: usize = 320 * 4;
+const CONTENT_LENGTH: usize = 1024 * 4;
 
 impl Post {
+    const LEN: usize = DISCRIMINATOR_LENGTH + PUBKEY_LENGTH + TIMESTAMP_LENGTH + STRING_LENGTH_PREFIX + CONTENT_LENGTH;
+}
+
+impl Comment {
     const LEN: usize = DISCRIMINATOR_LENGTH + PUBKEY_LENGTH + TIMESTAMP_LENGTH + STRING_LENGTH_PREFIX + CONTENT_LENGTH;
 }
 

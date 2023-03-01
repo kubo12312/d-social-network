@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#__nuxt {
+  height: 100% !important;
+  width: 100% !important;
+  overflow: hidden;
+  font-family: Lato, sans-serif;
+}
+
+::-webkit-scrollbar {
+  @apply w-2.5;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-400 rounded h-full;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply rounded bg-gray-500;
+}
+
+.swv-button.swv-button-trigger, .swv-dropdown {
+  @apply w-full text-white bg-blue-400 transition rounded-full justify-center hover:bg-blue-600 #{!important};
+}
+
+.swv-dropdown {
+  .swv-dropdown-list {
+    @apply translate-y-[calc(-100%_-_4rem)] w-full;
+
+    li {
+      @apply text-gray-900
+    }
+  }
+}
+
+.swv-modal {
+  .swv-modal-overlay {
+    @apply bg-gray-900 bg-opacity-60;
+  }
+
+  .swv-modal-wrapper {
+    @apply bg-gray-900 text-white;
+  }
+
+  .swv-modal-wrapper .swv-button {
+    @apply text-white hover:bg-gray-700 #{!important};
+  }
+
+  .swv-modal-button-close {
+    @apply bg-transparent;
+  }
+}

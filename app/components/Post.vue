@@ -1,24 +1,26 @@
 <template>
-  <div class="bg-white shadow rounded-md flex flex-col pt-4 max-w-screen-md mx-auto">
-    <div class="border-b border-gray-200 pb-2 px-4 mb-2 flex justify-between items-center">
-      <h3 class="text-black text-lg font-bold">{{ post.author }}</h3>
-      <p class="text-sm text-gray-300">{{ postTime }}</p>
+  <div class="flex py-5 px-4 max-w-screen-md border-b border-b-blue-400 border-opacity-50 last:border-0">
+    <div class="bg-blue-400 h-12 w-12 rounded-full shrink-0"></div>
+    <div class="ml-5">
+      <div class="mb-2 flex items-center">
+        <h3 class="text-zinc-600 text-md font-bold">{{ post.author }}</h3>
+        <p class="text-xs text-zinc-500 ml-4">{{ postTime }}</p>
+      </div>
+      <p class="text-sm text-zinc-500">
+        {{ post.content }}
+      </p>
+      <ul class="text-lg font-bold flex space-x-6 text-blue-500 mt-5">
+        <li class="flex items-center justify-center cursor-pointer transition" @click="likeSend(post.pubKey)">
+          <Icon v-if="post.userLike" name="ant-design:like-filled" />
+          <Icon v-else name="ant-design:like-outlined" />
+          <span class="text-sm ml-1">{{ post.likeCount }}</span>
+        </li>
+        <li class="flex items-center justify-center cursor-pointer transition">
+          <Icon name="bx:comment" />
+          <span class="text-sm ml-1">{{ post.commentCount }}</span>
+        </li>
+      </ul>
     </div>
-    <p class="text-md py-3 px-4">
-      {{ post.content }}
-    </p>
-    <ul class="grid grid-cols-2 text-md font-bold text-gray-500 mt-3 border-t border-gray-200">
-      <li
-        class="border-r border-gray-200 py-3 flex items-center justify-center cursor-pointer hover:bg-gray-100 transition rounded-bl"
-        :class="post.userLike ? 'text-blue-500' : 'text-gray-500'"
-        @click="likeSend(post.pubKey)"
-      >
-        <Icon name="ant-design:like-filled" class="mr-2" />Like <span class="text-gray-300 text-xs ml-2">({{ post.likeCount }})</span>
-      </li>
-      <li class="py-3 flex items-center justify-center cursor-pointer hover:bg-gray-100 transition rounded-br">
-        <Icon name="material-symbols:add-comment" class="mr-2" />Comment
-      </li>
-    </ul>
   </div>
 </template>
 
@@ -26,7 +28,7 @@
 import ToPost from '~~/mappers/ToPost'
 import { useTimeAgo } from '@vueuse/core'
 import useSendLike from '~~/api/useSendLike'
-import useSendUnlike from '~~/api/useSendUnlike';
+import useSendUnlike from '~~/api/useSendUnlike'
 
 const sendLike = useSendLike()
 const sendUnlike = useSendUnlike()
@@ -47,8 +49,7 @@ const likeSend = async (pubKey: string) => {
     } else {
       await sendLike.postLike(pubKey)
     }
-  }
-  catch (e) {
+  } catch (e) {
     console.log(e)
   }
 }

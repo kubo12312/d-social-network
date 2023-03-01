@@ -6,9 +6,11 @@ export default async (page: number) => {
   const workspace = useWorkspace()
   const postsStore = usePostsStore()
 
+  console.log('dddd')
+
   const oldPosts = postsStore.posts
 
-  const paginatedKeys = postsStore.accountKeys.slice(10 * page, 10 * (page + 1))
+  const paginatedKeys = postsStore.accountKeys.slice(10 * (page - 1), 10 * page)
 
   const response = await workspace.program.account.post.fetchMultiple(paginatedKeys)
 
@@ -16,11 +18,9 @@ export default async (page: number) => {
     return {
       ...item,
       pubKey: paginatedKeys[index].toBase58(),
-      likers: item?.likers?.some((publicKey: PublicKey) => publicKey.equals(workspace.wallet.publicKey)) ?? false
+      likers: workspace?.wallet?.publicKey ? item?.likers?.some((publicKey: PublicKey) => publicKey.equals(workspace?.wallet?.publicKey)) : false,
     }
   })
-
-  console.log(mergedReponse[0])
 
   const posts = mergedReponse.map(ToPost)
 

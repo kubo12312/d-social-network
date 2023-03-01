@@ -28,6 +28,7 @@ export default () => {
         createdAt: Date.now(),
         likeCount: 0,
         userLike: false,
+        commentCount: 0,
       }
 
       const newPosts = [newPost, ...posts.posts];

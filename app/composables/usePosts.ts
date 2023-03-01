@@ -7,8 +7,11 @@ export default () => {
 
   const accountKeys = computed(() => postsStore.accountKeys)
 
+  const maxPage = computed(() => Math.round(postsStore.accountKeys.length / 10))
+
   return reactive({
     posts,
     accountKeys,
+    maxPage,
   })
 }

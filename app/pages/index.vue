@@ -1,9 +1,7 @@
 <template>
-  <div v-infinite-scroll="onLoadMore" class="overflow-y-scroll h-[calc(100vh_-_64px)] pt-6 pb-6">
+  <div v-infinite-scroll="onLoadMore" class="overflow-y-scroll h-screen pt-6 pb-6">
     <PostForm />
-    <div class="space-y-6">
-      <Post v-for="(post, index) in posts.posts" :key="index" :post="post" />
-    </div>
+    <Posts />
   </div>
 </template>
 
@@ -15,15 +13,14 @@ import usePosts from '~~/composables/usePosts'
 
 const posts = usePosts()
 
-const page = ref(0)
-const maxPage = ref(Math.round(posts.accountKeys.length / 10))
+const page = ref(1)
 
 await useFetchAccounts()
 
 await useFetchPosts(page.value)
 
 const onLoadMore = async () => {
-  if (page.value < maxPage.value) {
+  if (page.value < posts.maxPage) {
     page.value = page.value + 1
     await useFetchPosts(page.value)
   }
