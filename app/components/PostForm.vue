@@ -8,14 +8,9 @@
         type="text"
         placeholder="What's on your mind"
         class="bg-transparent text-gray-700 placeholder:text-zinc-500 h-20 text-base w-full focus:outline-0"
-      />
+      ></textarea>
       <span class="limiter text-gray-400 text-xs ml-auto mt-1">{{ charactersLeft }} / 1024</span>
-      <button
-        class="bg-blue-500 hover:bg-blue-700 text-white font-medium font-lg py-1.5 px-6 rounded-md ml-auto mt-5 w-1/4"
-        @click.prevent="submitPost"
-      >
-        Post
-      </button>
+      <Button class="mt-5 w-1/4 ml-auto" text="Post" @click.prevent="submitPost" />
     </div>
   </div>
   <div v-if="loading" class="absolute inset-0 bg-gray-300 bg-opacity-50 w-full h-full text-center">

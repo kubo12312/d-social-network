@@ -5,6 +5,8 @@ export default () => {
 
   const posts = computed(() => postsStore.posts)
 
+  const userPosts = computed(() => postsStore.userPosts)
+
   const accountKeys = computed(() => postsStore.accountKeys)
 
   const maxPage = computed(() => Math.round(postsStore.accountKeys.length / 10))
@@ -13,5 +15,6 @@ export default () => {
     posts,
     accountKeys,
     maxPage,
+    userPosts,
   })
 }

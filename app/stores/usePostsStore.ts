@@ -5,5 +5,6 @@ export default defineStore('posts', {
   state: () => ({
     accountKeys: [] as PublicKey[],
     posts: [] as ReturnType<typeof ToPost>[],
+    userPosts: [] as ReturnType<typeof ToPost>[],
   }),
 })

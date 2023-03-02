@@ -6,8 +6,6 @@ export default async (page: number) => {
   const workspace = useWorkspace()
   const postsStore = usePostsStore()
 
-  console.log('dddd')
-
   const oldPosts = postsStore.posts
 
   const paginatedKeys = postsStore.accountKeys.slice(10 * (page - 1), 10 * page)

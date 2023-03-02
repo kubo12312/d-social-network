@@ -1,7 +1,7 @@
 <template>
   <div v-infinite-scroll="onLoadMore" class="overflow-y-scroll h-screen pt-6 pb-6">
     <PostForm />
-    <Posts />
+    <Posts :posts="posts.posts" />
   </div>
 </template>
 
