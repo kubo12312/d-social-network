@@ -3,14 +3,14 @@ import { web3 } from '@project-serum/anchor'
 import usePostsStore from '~~/stores/usePostsStore'
 
 export default () => {
-  const send = async (content: string) => {
+  const send = async (content: string, userName: string) => {
     const workspace = useWorkspace()
     const post = web3.Keypair.generate()
     const postsStore = usePostsStore()
     const posts = usePosts()
 
     try {
-      await workspace.program.rpc.postSend(content, {
+      await workspace.program.rpc.postSend(content, userName, {
         accounts: {
           creator: workspace.wallet!.publicKey,
           post: post.publicKey,
@@ -19,13 +19,12 @@ export default () => {
         signers: [post],
       })
 
-      const slicedKey = workspace.wallet!.publicKey.toBase58().slice(0, 6) + '...' + workspace.wallet!.publicKey.toBase58().slice(-6)
-
       const newPost = {
         pubKey: post.publicKey.toBase58(),
-        author: slicedKey,
+        creatorPubKey: workspace.wallet!.publicKey.toBase58(),
+        author: userName,
         content,
-        createdAt: Date.now(),
+        createdAt: Date.now() * 1000,
         likeCount: 0,
         userLike: false,
         commentCount: 0,

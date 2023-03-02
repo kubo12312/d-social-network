@@ -5,7 +5,7 @@
         v-for="item in sidebarItems"
         :key="item.name"
         class="flex items-center"
-        :class="(item.needLogin && !connected) ? 'hidden' : ''"
+        :class="(item.needLogin && !workspace.fullySignedIn) ? 'hidden' : ''"
       >
         <Icon :name="item.icon" class="mr-4 text-blue-400 text-2xl" />
         <router-link :to="item.link" class="text-white hover:text-gray-300 text-xl transition">
@@ -19,9 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { useWallet } from 'solana-wallets-vue'
-
-const connected = useWallet().connected
+const workspace = useWorkspace()
 
 const sidebarItems = ref([
   {

@@ -1,6 +1,8 @@
 import { PublicKey } from '@solana/web3.js'
+import { client } from '~~/lib/sanity'
 import ToPost from '~~/mappers/ToPost'
 import usePostsStore from '~~/stores/usePostsStore'
+import useUserStore from '~~/stores/useUserStore'
 
 export default async (page: number) => {
   const workspace = useWorkspace()

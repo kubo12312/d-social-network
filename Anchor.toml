@@ -2,7 +2,7 @@
 seeds = false
 skip-lint = false
 [programs.localnet]
-d_social_network = "c66C85hHCyaUJ6oYXdSRN381J1GY1Re2RTHkd8uis78"
+d_social_network = "F8DFBtqs4hFHqmiJtmyyoFJKwgJ5sTBUsrNtuVxshaH"
 
 [registry]
 url = "https://api.apr.dev"

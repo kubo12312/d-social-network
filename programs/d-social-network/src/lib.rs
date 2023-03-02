@@ -1,12 +1,12 @@
 use anchor_lang::prelude::*;
 
-declare_id!("c66C85hHCyaUJ6oYXdSRN381J1GY1Re2RTHkd8uis78");
+declare_id!("F8DFBtqs4hFHqmiJtmyyoFJKwgJ5sTBUsrNtuVxshaH");
 
 #[program]
 pub mod d_social_network {
     use super::*;
 
-    pub fn post_send(ctx: Context<SendPost>, content: String) -> Result<()> {
+    pub fn post_send(ctx: Context<SendPost>, content: String, creator_name: String) -> Result<()> {
         let post: &mut Account<Post> = &mut ctx.accounts.post;
         let creator: &Signer = &ctx.accounts.creator;
         let time: Clock = Clock::get().unwrap();
@@ -16,6 +16,7 @@ pub mod d_social_network {
         }
 
         post.creator = *creator.key;
+        post.creator_name = creator_name;
         post.timestamp = time.unix_timestamp;
         post.content = content;
         post.comment_count = 0;
@@ -103,6 +104,7 @@ pub struct CommentSend<'info> {
 #[account]
 pub struct Post {
     pub creator: Pubkey,
+    pub creator_name: String,
     pub timestamp: i64,
     pub content: String,
     pub comment_count: u64,
@@ -122,9 +124,10 @@ const PUBKEY_LENGTH: usize = 32;
 const TIMESTAMP_LENGTH: usize = 8;
 const STRING_LENGTH_PREFIX: usize = 4;
 const CONTENT_LENGTH: usize = 1024 * 4;
+const CREATOR_NAME_LENGTH: usize = 32 * 4;
 
 impl Post {
-    const LEN: usize = DISCRIMINATOR_LENGTH + PUBKEY_LENGTH + TIMESTAMP_LENGTH + STRING_LENGTH_PREFIX + CONTENT_LENGTH;
+    const LEN: usize = DISCRIMINATOR_LENGTH + PUBKEY_LENGTH + TIMESTAMP_LENGTH + STRING_LENGTH_PREFIX + CONTENT_LENGTH + STRING_LENGTH_PREFIX + CREATOR_NAME_LENGTH;
 }
 
 impl Comment {
