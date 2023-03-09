@@ -5,6 +5,7 @@ export default (data: any) => ({
   content: data.content,
   createdAt: data.timestamp ?? '',
   likeCount: data.likeCount ?? 0,
-  userLike: data.likers ?? false,
+  likers: data.likers ?? [],
   commentCount: data.commentCount ?? 0,
+  userImage: data.userImage ?? '',
 })

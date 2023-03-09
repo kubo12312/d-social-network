@@ -40,7 +40,7 @@ export default defineNuxtConfig({
   build: {
     transpile: ['@solana/web3.js', '@solana/wallet-adapter-base', '@solana/wallet-adapter-phantom'],
   },
-  buildModules: ['@nuxtjs/google-fonts', 'process-env-loader'],
+  buildModules: ['@nuxtjs/google-fonts'],
   modules: ['@nuxtjs/tailwindcss', 'nuxt-icon', '@pinia/nuxt'],
   pinia: {
     autoImports: ['defineStore', ['defineStore', 'definePiniaStore']],

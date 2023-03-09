@@ -9,10 +9,10 @@
     <div class="space-y-4 mt-5 px-6">
       <Input v-model:value="userName" label="User name" name="user-name" type="text" :required="true" />
 
-      <Input v-model:value="userImage" label="User Image" name="user-image" type="file" />
+      <InputFile label="User Image" name="user-image" type="file" @image-change="setNewImage" />
     </div>
 
-    <Button text="Create" class="mt-6 w-1/3 mx-auto" @click="$emit('submit', { name: userName })" />
+    <Button text="Create" class="mt-6 w-1/3 mx-auto" @click="$emit('submit', { name: userName, userImage })" />
 
     <Icon
       name="material-symbols:close"
@@ -29,9 +29,17 @@ const emit = defineEmits(['close', 'submit'])
 
 const modalWindow = ref(null)
 const userName = ref('')
-const userImage = ref('')
+const userImage = ref<File | null>(null)
 
 onClickOutside(modalWindow, () => {
   emit('close')
 })
+
+const setNewImage = (files: FileList) => {
+  if (files && files[0]) {
+    userImage.value = files[0]
+  } else {
+    userImage.value = null
+  }
+}
 </script>

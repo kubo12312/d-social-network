@@ -1,25 +1,26 @@
-import { PublicKey } from "@solana/web3.js"
-import ToPost from "~~/mappers/ToPost"
-import usePostsStore from "~~/stores/usePostsStore"
+import ToPost from '~~/mappers/ToPost'
+import usePostsStore from '~~/stores/usePostsStore'
+import useFetchUserImage from '~~/api/useFetchUserImage'
 
 export default async (publicKey: string) => {
-    const workspace = useWorkspace()
-    const postsStore = usePostsStore()
-    const authorFilter = filters(publicKey)
-    
-    const response = await workspace.program.account.post.all([authorFilter])
-  
-    const mergedReponse = response.map((item: any, index: number) => {
-        return {
-        ...item.account,
-        pubKey: item.publicKey.toBase58(),
-        likers: workspace?.wallet?.publicKey ? item.account?.likers?.some((publicKey: PublicKey) => publicKey.equals(workspace?.wallet?.publicKey)) : false,
-        }
-    })
+  const workspace = useWorkspace()
+  const postsStore = usePostsStore()
+  const fetchUserImage = useFetchUserImage()
+  const authorFilter = filters(publicKey)
 
-    mergedReponse.sort((a, b) => b.timestamp - a.timestamp)
-    
-    const posts = mergedReponse.map(ToPost)
-    
-    postsStore.$patch({ userPosts: posts })
+  const response = await workspace.program.account.post.all([authorFilter])
+
+  const mergedReponse = await Promise.all(response.map(async (item: any) => {
+    return {
+      ...item.account,
+      pubKey: item.publicKey.toBase58(),
+      userImage: await fetchUserImage.getUserImage(item.account.creator.toBase58()),
+    }
+  }))
+
+  mergedReponse.sort((a, b) => b.timestamp - a.timestamp)
+
+  const posts = mergedReponse.map(ToPost)
+
+  postsStore.$patch({ userPosts: posts })
 }

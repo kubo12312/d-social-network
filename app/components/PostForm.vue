@@ -1,6 +1,6 @@
 <template>
   <div v-if="workspace.fullySignedIn" class="max-w-screen-md bg-violet-50 rounded-2xl flex px-5 p-4">
-    <div class="bg-blue-400 h-12 w-12 rounded-full shrink-0 mr-5"></div>
+    <SanityImage :width="48" :height="48" class="h-12 w-12 mr-5" />
 
     <div class="w-full flex flex-col">
       <textarea
@@ -33,12 +33,14 @@ const charactersLeft = computed(() => 1024 - postValue.value.length)
 const submitPost = async () => {
   try {
     loading.value = true
-    await sendPost.send(postValue.value, user.userName!)
+    const response = await sendPost.send(postValue.value, user.userName!)
+    if (response) {
+      postValue.value = ''
+    }
   } catch (e) {
     console.log(e)
   } finally {
     loading.value = false
-    postValue.value = ''
   }
 }
 </script>

@@ -1,5 +1,5 @@
 import { BN } from '@project-serum/anchor'
-import useWorkspace from '~~/composables/useWorkspace'
+import { PublicKey } from '@solana/web3.js'
 import usePostsStore from '~~/stores/usePostsStore'
 
 export default async () => {
@@ -15,7 +15,9 @@ export default async () => {
     timestamp: new BN(account.data, 'le'),
   }))
 
-  const accountKeys = allTweetsWithTimestamps.sort((a, b) => b.timestamp.cmp(a.timestamp)).map(({ pubkey }) => pubkey)
+  const accountKeys = allTweetsWithTimestamps
+    .sort((a: any, b: any) => b.timestamp.cmp(a.timestamp))
+    .map(({ pubkey }) => pubkey)
 
   postsStore.$patch({ accountKeys })
 }

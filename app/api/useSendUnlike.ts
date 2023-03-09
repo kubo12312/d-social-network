@@ -1,4 +1,3 @@
-
 import ToPost from '~~/mappers/ToPost'
 import usePostsStore from '~~/stores/usePostsStore'
 
@@ -15,9 +14,9 @@ export default () => {
         },
       })
 
-      const post = postsStore.posts.find((item: ReturnType<typeof ToPost>) => {
+      postsStore.posts.find((item: ReturnType<typeof ToPost>) => {
         if (item.pubKey === postPubKey) {
-          item.userLike = false
+          item.likers.splice(item.likers.indexOf(workspace.wallet!.publicKey), 1)
           item.likeCount = item.likeCount - 1
         }
       })

@@ -16,7 +16,7 @@ export default () => {
 
       postsStore.posts.find((item: ReturnType<typeof ToPost>) => {
         if (item.pubKey === postPubKey) {
-          item.userLike = true
+          item.likers.push(workspace.wallet!.publicKey)
           item.likeCount = Number(item.likeCount) + 1
         }
       })

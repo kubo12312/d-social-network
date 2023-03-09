@@ -31,7 +31,7 @@ const sidebarItems = ref([
   {
     name: 'Profile',
     icon: 'ant-design:user',
-    link: '/profile',
+    link: '/my-profile',
     needLogin: true,
   },
 ])

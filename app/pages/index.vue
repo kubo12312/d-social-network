@@ -10,8 +10,10 @@ import useFetchAccounts from '~~/api/useFetchAccounts'
 import { vInfiniteScroll } from '@vueuse/components'
 import useFetchPosts from '~~/api/useFetchPosts'
 import usePosts from '~~/composables/usePosts'
+import usePostsStore from '~~/stores/usePostsStore';
 
 const posts = usePosts()
+const postsStore = usePostsStore()
 
 const page = ref(1)
 
@@ -25,4 +27,8 @@ const onLoadMore = async () => {
     await useFetchPosts(page.value)
   }
 }
+
+onUnmounted(() => {
+  postsStore.$patch({ posts: [], accountKeys: [] })
+})
 </script>

@@ -16,8 +16,8 @@ pub mod d_social_network {
         }
 
         post.creator = *creator.key;
-        post.creator_name = creator_name;
         post.timestamp = time.unix_timestamp;
+        post.creator_name = creator_name;
         post.content = content;
         post.comment_count = 0;
         post.like_count = 0;
@@ -104,8 +104,8 @@ pub struct CommentSend<'info> {
 #[account]
 pub struct Post {
     pub creator: Pubkey,
-    pub creator_name: String,
     pub timestamp: i64,
+    pub creator_name: String,
     pub content: String,
     pub comment_count: u64,
     pub like_count: u64,
@@ -127,7 +127,7 @@ const CONTENT_LENGTH: usize = 1024 * 4;
 const CREATOR_NAME_LENGTH: usize = 32 * 4;
 
 impl Post {
-    const LEN: usize = DISCRIMINATOR_LENGTH + PUBKEY_LENGTH + TIMESTAMP_LENGTH + STRING_LENGTH_PREFIX + CONTENT_LENGTH + STRING_LENGTH_PREFIX + CREATOR_NAME_LENGTH;
+    const LEN: usize = DISCRIMINATOR_LENGTH + PUBKEY_LENGTH + TIMESTAMP_LENGTH + STRING_LENGTH_PREFIX + CREATOR_NAME_LENGTH + STRING_LENGTH_PREFIX + CONTENT_LENGTH;
 }
 
 impl Comment {

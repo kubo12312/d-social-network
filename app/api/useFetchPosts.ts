@@ -1,12 +1,11 @@
-import { PublicKey } from '@solana/web3.js'
-import { client } from '~~/lib/sanity'
 import ToPost from '~~/mappers/ToPost'
 import usePostsStore from '~~/stores/usePostsStore'
-import useUserStore from '~~/stores/useUserStore'
+import useFetchUserImage from './useFetchUserImage'
 
 export default async (page: number) => {
   const workspace = useWorkspace()
   const postsStore = usePostsStore()
+  const fetchUserImage = useFetchUserImage()
 
   const oldPosts = postsStore.posts
 
@@ -14,15 +13,19 @@ export default async (page: number) => {
 
   const response = await workspace.program.account.post.fetchMultiple(paginatedKeys)
 
-  const mergedReponse = response.map((item: any, index: number) => {
-    return {
-      ...item,
-      pubKey: paginatedKeys[index].toBase58(),
-      likers: workspace?.wallet?.publicKey ? item?.likers?.some((publicKey: PublicKey) => publicKey.equals(workspace?.wallet?.publicKey)) : false,
-    }
-  })
+  const mergedReponse = await Promise.all(
+    response.map(async (item: any, index: number) => {
+      return {
+        ...item,
+        pubKey: paginatedKeys[index].toBase58(),
+        timestamp: item.timestamp.toNumber(),
+        userImage: await fetchUserImage.getUserImage(item.creator.toBase58()),
+      }
+    }),
+  )
 
   const posts = mergedReponse.map(ToPost)
+  const newPosts = [...oldPosts, ...posts]
 
-  postsStore.$patch({ posts, ...oldPosts })
+  postsStore.$patch({ posts: newPosts })
 }

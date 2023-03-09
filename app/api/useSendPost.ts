@@ -8,6 +8,7 @@ export default () => {
     const post = web3.Keypair.generate()
     const postsStore = usePostsStore()
     const posts = usePosts()
+    const user = useUser()
 
     try {
       await workspace.program.rpc.postSend(content, userName, {
@@ -24,14 +25,17 @@ export default () => {
         creatorPubKey: workspace.wallet!.publicKey.toBase58(),
         author: userName,
         content,
-        createdAt: Date.now() * 1000,
+        createdAt: Math.floor(Date.now() / 1000),
         likeCount: 0,
-        userLike: false,
+        likers: [],
         commentCount: 0,
+        userImage: user.userImage ?? null,
       }
 
-      const newPosts = [newPost, ...posts.posts];
+      const newPosts = [newPost, ...posts.posts]
       postsStore.$patch({ posts: newPosts })
+
+      return true
     } catch (e) {
       console.log(e)
     }

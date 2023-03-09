@@ -1,6 +1,6 @@
 <template>
   <div v-infinite-scroll="onLoadMore" class="overflow-y-scroll h-screen pt-6 pb-6">
-    <ProfileHeader />
+    <MyProfileHeader />
     <Posts :posts="posts.userPosts" />
   </div>
 </template>
@@ -22,7 +22,7 @@ const userPosts = ref(posts.userPosts.slice((page.value - 1) * 10, page.value * 
 
 await useFetchProfilePosts(workspace.wallet.publicKey.toBase58())
 
-onUnmounted(() => {
+onDeactivated(() => {
   postsStore.userPosts = []
 })
 

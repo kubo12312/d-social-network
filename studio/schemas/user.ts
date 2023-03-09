@@ -9,14 +9,22 @@ export default {
       title: 'Name',
     },
     {
-        name: 'publicKey',
-        type: 'string',
-        title: 'Public Key',
+      name: 'publicKey',
+      type: 'string',
+      title: 'Public Key',
     },
     {
-        name: 'profileImage',
-        type: 'image',
-        title: 'Profile Image',
+      name: 'profileImage',
+      type: 'image',
+      title: 'Profile Image',
+      initialValue: null,
+    },
+    {
+      name: 'following',
+      type: 'array',
+      title: 'Following',
+      of: [{type: 'string'}],
+      defaultValue: [],
     },
   ],
 }
